@@ -1,0 +1,15 @@
+# Pycharm Files and Folders
+.idea/
+
+# Python Virtual Environment
+venv/
+.venv/
+
+# Python Cache folders
+__pycache__/
+
+# Environment Variables
+.env
+
+# SQLite Files
+*.sqlite3
