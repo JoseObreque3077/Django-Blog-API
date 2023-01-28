@@ -32,12 +32,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Local Apps
     'accounts.apps.AccountsConfig',
-    'posts.apps.PostsConfig'
+    'posts.apps.PostsConfig',
+    # 3rd Party Apps
+    'rest_framework',
+    'corsheaders'
 ]
+# Django REST Framework Permissions
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -118,3 +128,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom User Model Settings
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Django CORS Whitelist
+CORS_ORIGIN_WHITELIST = {
+    "http://localhost:3000",
+    "http://localhost:8000",
+}
+
+# CSRF Whitelist
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000"
+]
