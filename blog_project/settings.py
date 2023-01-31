@@ -37,17 +37,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders'
 ]
-# Django REST Framework Permissions
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
-    ],
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -129,11 +123,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom User Model Settings
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+# Django REST Framework Permissions
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
 # Django CORS Whitelist
-CORS_ORIGIN_WHITELIST = {
+CORS_ORIGIN_WHITELIST = (
     "http://localhost:3000",
     "http://localhost:8000",
-}
+)
 
 # CSRF Whitelist
 CSRF_TRUSTED_ORIGINS = [
