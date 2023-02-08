@@ -1,59 +1,36 @@
-from rest_framework.generics import (
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView
-)
+from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAdminUser
+from rest_framework.viewsets import ModelViewSet
 
 from posts.models import Post
 from posts.permissions import IsAuthorOrReadOnly
-from posts.serializers import PostSerializer
+from posts.serializers import PostSerializer, UserSerializer
 
 
-class PostList(ListCreateAPIView):
+class PostViewSet(ModelViewSet):
     """
-    This class-based view is used to handle requests for listing all posts
-    and creating new posts.
+    Handles views for objects of the 'Post' class.
 
-    It inherits from the ListCreateAPIView generic view provided by the
-    Django REST framework, which provides the basic implementation for
-    handling GET and POST requests for listing and creating new instances
-    of a model.
+    Provides basic CRUD operations on 'Post' class objects
+    using the 'PostSerializer' serializer.
 
-    The permission required to access this view is that the user must be
-    authenticated.
-
-    Attributes:
-        permission_classes: A tuple of permission classes that define the
-            permission required to access this view.
-        queryset: A queryset that contains all the posts in the database.
-        serializer_class: The serializer class used to convert the Post model
-            into a JSON format.
+    Additionally, it only allows the authors of a 'Post' object to edit it.
+    Other users can only view the object.
     """
     permission_classes = (IsAuthorOrReadOnly, )
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
 
-class PostDetail(RetrieveUpdateDestroyAPIView):
+class UserViewSet(ModelViewSet):
     """
-    This class-based view is used to handle requests for retrieving, updating,
-    and deleting a specific post.
+    Handles views for objects of the 'CustomUser' class.
 
-    It inherits from the 'RetrieveUpdateDestroyAPIView' generic view provided
-    by the Django REST framework, which provides the basic implementation for
-    handling GET, PUT, PATCH, and DELETE requests for a specific instance
-    of a model.
+    Provides basic CRUD operations on 'User' class objects
+    using the 'UserSerializer' serializer.
 
-    The permission required to access this view is that the user must either
-    be the author of the post or the request method must be a safe method
-    (GET, HEAD, or OPTIONS).
-
-    Attributes:
-        permission_classes: A tuple of permission classes that define the
-            permission required to access this view.
-        queryset: A queryset that contains all the posts in the database.
-        serializer_class: The serializer class used to convert the Post model
-            into a JSON format.
+    Only users with the 'Admin' permission can access this viewset.
     """
-    permission_classes = (IsAuthorOrReadOnly,)
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    permission_classes = (IsAdminUser, )
+    queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
